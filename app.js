@@ -8,20 +8,20 @@
 // Event handling, user interaction is what starts the code execution.
 
 const taskInput = document.getElementById('new-task'); //Add a new task.
-const addButton = document.getElementsByTagName('button')[0]; //first button
+const addTaskButton = document.getElementsByTagName('button')[0]; //first button
 const incompleteTaskHolder = document.getElementById('incomplete-tasks'); //ul of #incomplete-tasks
 const completedTasksHolder = document.getElementById('completed-tasks'); //completed-tasks
 
 //New task list item
-const createNewTaskElement = function (taskString) {
+const createNewTaskElement = function (taskText) {
   const listItem = document.createElement('li');
 
   //input (checkbox)
-  const checkBox = document.createElement('input'); //checkbx
+  const statusCheckbox = document.createElement('input'); //checkbx
   //label
   const label = document.createElement('label'); //label
   //input (text)
-  const editInput = document.createElement('input'); //text
+  const editTextInput = document.createElement('input'); //text
   //button.edit
   const editButton = document.createElement('button'); //edit button
 
@@ -29,14 +29,14 @@ const createNewTaskElement = function (taskString) {
   const deleteButton = document.createElement('button'); //delete button
   const deleteButtonImg = document.createElement('img'); //delete button image
 
-  label.innerText = taskString;
+  label.innerText = taskText;
   label.className = 'task todo-list__label';
 
   //Each elements, needs appending
-  checkBox.type = 'checkbox';
-  checkBox.className = 'todo-list__checkbox';
-  editInput.type = 'text';
-  editInput.className = 'task input todo-list__input';
+  statusCheckbox.type = 'checkbox';
+  statusCheckbox.className = 'todo-list__checkbox';
+  editTextInput.type = 'text';
+  editTextInput.className = 'task input todo-list__input';
 
   editButton.innerText = 'Edit'; //innerText encodes special characters, HTML does not.
   editButton.className = 'todo-list__edit-btn btn';
@@ -50,9 +50,9 @@ const createNewTaskElement = function (taskString) {
   listItem.className = 'todo-list__item';
 
   //and appending.
-  listItem.appendChild(checkBox);
+  listItem.appendChild(statusCheckbox);
   listItem.appendChild(label);
-  listItem.appendChild(editInput);
+  listItem.appendChild(editTextInput);
   listItem.appendChild(editButton);
   listItem.appendChild(deleteButton);
   return listItem;
@@ -75,7 +75,7 @@ const addTask = function () {
 const editTask = function () {
   const listItem = this.parentNode;
 
-  const editInput = listItem.querySelector('input[type=text]');
+  const editTextInput = listItem.querySelector('input[type=text]');
   const label = listItem.querySelector('label');
   const editBtn = listItem.querySelector('.todo-list__edit-btn');
   const containsClass = listItem.classList.contains('todo-list__edit-mode');
@@ -83,10 +83,10 @@ const editTask = function () {
   if (containsClass) {
     //switch to .edit-mode
     //label becomes the inputs value.
-    label.innerText = editInput.value;
+    label.innerText = editTextInput.value;
     editBtn.innerText = 'Edit';
   } else {
-    editInput.value = label.innerText;
+    editTextInput.value = label.innerText;
     editBtn.innerText = 'Save';
   }
 
@@ -125,11 +125,11 @@ const taskIncomplete = function () {
 //The glue to hold it all together.
 
 //Set the click handler to the addTask function.
-addButton.addEventListener('click', addTask);
+addTaskButton.addEventListener('click', addTask);
 
 const bindTaskEvents = function (taskListItem, checkBoxEventHandler) {
   //select ListItems children
-  const checkBox = taskListItem.querySelector('input[type=checkbox]');
+  const statusCheckbox = taskListItem.querySelector('input[type=checkbox]');
   const editButton = taskListItem.querySelector('button.todo-list__edit-btn');
   const deleteButton = taskListItem.querySelector(
     'button.todo-list__delete-btn',
@@ -138,7 +138,7 @@ const bindTaskEvents = function (taskListItem, checkBoxEventHandler) {
   //Bind editTask to edit button.
   editButton.addEventListener('click', editTask);
   deleteButton.addEventListener('click', deleteTask);
-  checkBox.addEventListener('change', checkBoxEventHandler);
+  statusCheckbox.addEventListener('change', checkBoxEventHandler);
 };
 
 //cycle over incompleteTaskHolder ul list items
