@@ -102,21 +102,24 @@ const deleteTask = function () {
   ul.removeChild(listItem);
 };
 
-//Mark task completed
+// Shared function to eliminate duplication in task switching logic
+const changeTaskState = function (
+  taskListItem,
+  destinationHolder,
+  nextHandler,
+) {
+  destinationHolder.appendChild(taskListItem);
+  bindTaskEvents(taskListItem, nextHandler);
+};
+
 const taskCompleted = function () {
-  //Append the task list item to the #completed-tasks
   const listItem = this.parentNode;
-  completedTasksHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskIncomplete);
+  changeTaskState(listItem, completedTasksHolder, taskIncomplete);
 };
 
 const taskIncomplete = function () {
-  //Mark task as incomplete.
-  //When the checkbox is unchecked
-  //Append the task list item to the #incomplete-tasks.
   const listItem = this.parentNode;
-  incompleteTaskHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
+  changeTaskState(listItem, incompleteTaskHolder, taskCompleted);
 };
 
 //The glue to hold it all together.
